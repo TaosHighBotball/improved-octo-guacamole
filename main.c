@@ -1,6 +1,6 @@
 //Bob's octo guacamole
 #include <kipr/botball.h>
-#define seePeep (analog(2) < 800 && analog(2) > 700)
+#define seePeep (analog(5) < 630 && analog(5) > 570)
 #define black (analog(0) && analog(1) > 1000)
 #define white (analog(0) && analog(1) < 1000)
 //looked at from back
@@ -14,15 +14,15 @@ void move(int speed){ //move forward or backward at desired speed
 void lineFollow(){
     if(whiteBlack){
         ao();
-        move(2500);
+        move(1500);
     }
     if(black){
         ao();
-        mav(0, -2000);
+        mav(0, -1500);
     }
     if(white){
         ao();
-        mav(1, -2000);
+        mav(1, -1500);
     }
 }
 
@@ -44,12 +44,11 @@ void findPeeps(){
        lineFollow();
     }
     ao();
-    cmpc(0);
+    //msleep(500);
     printf("%d\n",analog(2));
     cmpc(0);
-    cmpc(0);
-    mrp(0, 1000, 3540);
-    msleep(5000);
+    mrp(0, 500, 3640);
+    msleep(8000);
     ao();
 }
 
