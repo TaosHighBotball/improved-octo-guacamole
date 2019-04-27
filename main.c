@@ -1,4 +1,5 @@
-//Bob's octo guacamole
+
+  //Bob's octo guacamole
 #include <kipr/botball.h>
 #define seePeep (analog(5) < 630 && analog(5) > 570)
 #define black (analog(0) && analog(1) > 1000)
@@ -18,137 +19,97 @@ void lineFollow(){
     }
     if(black){
         ao();
-        mav(0, -1500);
+        mav(0, 1500);
     }
     if(white){
         ao();
-        mav(1, -1500);
+        mav(1, 1500);
     }
 }
 
-void slowClose(int port, int spos, int epos){ // slowly move any   
-    int c = spos;                             // servo at any position 
-    while(c != epos){                         // to any desired position
-        set_servo_position(port, c);
-        if(spos > epos){
-            c--;
-        }
-        else if(spos < epos){
-            c++;
-        }
-    }
-}
 
-void findPeeps(){
-    while (!seePeep){
-       lineFollow();
-    }
-    ao();
-    //msleep(500);
-    printf("%d\n",analog(2));
-    cmpc(0);
-    mrp(0, 500, 3640);
-    msleep(8000);
-    ao();
-}
+       
+
 
 void leaveBox(){
-    mav(1,1900);
-    mav(0,0);
-    msleep(3000);
     while (white){
-           move(2000);
+    	mav(0,2000);
+    	mav(1,0);
     }
+    ao();
+    mav(0, 300);
+    msleep(180);
+    ao();
     while (black){
-           mav(0,2000);
-           mav(1,500);
-           msleep(3000);
-           move(2000);
+        move(2000);     
     }
-    while (white){
-           move(2000);
+    while(white){
+        mav(0,2000);
+        mav(1,1550);
     }
-    ao();
-    move(-1000);
-    msleep(600);
-    while (analog(1) < 1000){
-        mav(0,-2000);
-        mav(1,2000);
-        set_servo_position(1,1330);
+    while(black){
+        move(-2000);
+        //msleep(800);
     }
-    while(analog(1) > 1000){
-        mav(0,-2000);
-        mav(1,2000);
+    while(white){
+        move(2000);
+        //msleep(800);
+        
     }
-    ao();
-    msleep(500);
-    ao();
+    while(black){
+        mav(1,1000);
+        mav(0,0);
+        move(1000);
+    }
+      
+    while(white){
+        mav(1,1000);
+        mav(0,0);
+    }
     int i = 0;
-    while(i < 250){
+    while (i < 900){
         lineFollow();
         i++;
     }
-    move(-1000);
-    msleep(500);
-    ao();
-  
 }
-
 void getBack(){
-    while(black){
-        move(-2000);
-    }
-    ao();
-    while(analog(0) < 2000){
-        mav(1, -1000);
-    }
-    ao();
-    while(black){
-        move(2000);
-    }
-    while(!(analog(0) && analog(1) > 1500)){
-        move(2000);
-    }
-    ao();
-    
+   while (analog(1)>1000){
+    mav(0,0);
+    mav(1,1000);
+
 }
-
-
-void grabPeeps(){ //grab people off the skybridge and out of the flood zone
-    set_servo_position(1, 2047);
-    slowClose(2, 1330, 400);
-	while(digital(0) != 1){
+    while(white){
+        mav(1,1000);
+        mav(0,-1000);
+    }
+    while(black){
         move(1000);
     }
-    move(-500);
-    msleep(200);
-    ao();
-    slowClose(1, 2047, 1218);
-    slowClose(2, 400, 1006);
-    move(-1000);
-    msleep(800);
-    ao();
-    move(500);
-    msleep(200);   
-    ao();
-    slowClose(1, 1018, 1000);
-    msleep(1000);
-    move(-1000);
-    msleep(2000);
-    ao();
+    while(white){
+        mav(0,1000);
+        mav(1,800);
+    }
+    while(black){
+        mav(0,1000);
+        mav(1,0);
+    }
+    mav(0,1000);
+    mav(1,0);
+    msleep(2200);
+    move(1000);
+    msleep(400);  
+
 }
+
+  
 
 int main()
 {
-    //wait_for_light(6);
-    shut_down_in(119);
-    enable_servos();
-    set_servo_position(1, 1100);
-    set_servo_position(2, 1330);
-    
+
+    wait_for_light(4);
+    shut_down_in(117);
     leaveBox();
-    findPeeps();
-    grabPeeps();
+    lineFollow();
     getBack();
     return 0;
 }
