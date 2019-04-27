@@ -1,0 +1,14 @@
+void slowClose(int port, int speed, int spos, int epos){ // slowly move any   
+    int c = spos;                             // servo at any position 
+    while(c != epos){                         // to any desired position
+        set_servo_position(port, c);
+        if(spos > epos){
+            msleep(speed);
+            c--;
+        }
+        else if(spos < epos){
+            msleep(speed);
+            c++;
+        }
+    }
+}
